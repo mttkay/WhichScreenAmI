@@ -13,7 +13,7 @@ public class ScreenDetectorActivity extends Activity {
     private static final int DENSITY_TV = 213;
     private static final int DENSITY_MEDIUM = 160;
     private static final int DENSITY_LOW = 120;
-    
+
     private static final int UI_MODE_TYPE_NORMAL = 1;
     private static final int UI_MODE_TYPE_DESK = 2;
     private static final int UI_MODE_TYPE_CAR = 3;
@@ -25,16 +25,26 @@ public class ScreenDetectorActivity extends Activity {
 
         setContentView(R.layout.main);
 
-        String density = getScreenDensity();
-        String size = getScreenSize();
+        String density = getDensityClass();
+        String size = getSizeClass();
 
         TextView text1 = (TextView) findViewById(R.id.text1);
         text1.setText(size + " @ " + density);
+
         TextView text2 = (TextView) findViewById(R.id.text2);
-        text2.setText("UI mode: " + getUiMode());
+        StringBuilder sb = new StringBuilder();
+        sb.append("Scaled Density: " + getScaledDensity());
+        sb.append("\nReal Density: " + getScreenDensity());
+        sb.append("\nUI mode: " + getUiMode());
+        text2.setText(sb.toString());
+
+        TextView textX = (TextView) findViewById(R.id.text_x);
+        textX.setText(getScreenX() + "px");
+        TextView textY = (TextView) findViewById(R.id.text_y);
+        textY.setText(getScreenY() + "px");
     }
 
-    private String getScreenSize() {
+    private String getSizeClass() {
         String sizeString = null;
         Configuration c = getResources().getConfiguration();
         int size = c.screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK;
@@ -52,36 +62,36 @@ public class ScreenDetectorActivity extends Activity {
             sizeString = "XLARGE";
             break;
         default:
-            sizeString = "UNDEFINED";
+            sizeString = "?";
         }
         return sizeString;
     }
 
-    private String getScreenDensity() {
+    private String getDensityClass() {
         DisplayMetrics dm = getResources().getDisplayMetrics();
         String density = null;
         switch (dm.densityDpi) {
         case DENSITY_XHIGH:
-            density = "XHDPI (" + DENSITY_XHIGH + "dpi)";
+            density = "XHDPI";
             break;
         case DENSITY_HIGH:
-            density = "HDPI (" + DENSITY_HIGH + "dpi)";
+            density = "HDPI";
             break;
         case DENSITY_TV:
-            density = "TV (" + DENSITY_TV + "dpi)";
+            density = "TV";
             break;
         case DENSITY_MEDIUM:
-            density = "MDPI (" + DENSITY_MEDIUM + "dpi)";
+            density = "MDPI";
             break;
         case DENSITY_LOW:
-            density = "LDPI (" + DENSITY_LOW + "dpi)";
+            density = "LDPI";
             break;
         default:
-            density = "UNDEFINED";
+            density = "?";
         }
         return density;
     }
-    
+
     private String getUiMode() {
         String uiModeString = null;
         Configuration c = getResources().getConfiguration();
@@ -100,8 +110,29 @@ public class ScreenDetectorActivity extends Activity {
             uiModeString = "TV";
             break;
         default:
-            uiModeString = "UNDEFINED";
+            uiModeString = "?";
         }
         return uiModeString;
     }
+
+    private String getScreenX() {
+        DisplayMetrics dm = getResources().getDisplayMetrics();
+        return String.valueOf(dm.widthPixels);
+    }
+
+    private String getScreenY() {
+        DisplayMetrics dm = getResources().getDisplayMetrics();
+        return String.valueOf(dm.heightPixels);
+    }
+
+    private String getScaledDensity() {
+        DisplayMetrics dm = getResources().getDisplayMetrics();
+        return String.valueOf(dm.densityDpi);
+    }
+
+    private String getScreenDensity() {
+        DisplayMetrics dm = getResources().getDisplayMetrics();
+        return (int) dm.xdpi + "x" + (int) dm.ydpi;
+    }
+
 }
