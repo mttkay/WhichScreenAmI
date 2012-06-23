@@ -7,52 +7,101 @@ import android.util.DisplayMetrics;
 import android.widget.TextView;
 
 public class ScreenDetectorActivity extends Activity {
+
+    private static final int DENSITY_XHIGH = 320;
+    private static final int DENSITY_HIGH = 240;
+    private static final int DENSITY_TV = 213;
+    private static final int DENSITY_MEDIUM = 160;
+    private static final int DENSITY_LOW = 120;
+    
+    private static final int UI_MODE_TYPE_NORMAL = 1;
+    private static final int UI_MODE_TYPE_DESK = 2;
+    private static final int UI_MODE_TYPE_CAR = 3;
+    private static final int UI_MODE_TYPE_TELEVISION = 4;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.main);
 
+        String density = getScreenDensity();
+        String size = getScreenSize();
+
+        TextView text1 = (TextView) findViewById(R.id.text1);
+        text1.setText(size + " @ " + density);
+        TextView text2 = (TextView) findViewById(R.id.text2);
+        text2.setText("UI mode: " + getUiMode());
+    }
+
+    private String getScreenSize() {
+        String sizeString = null;
+        Configuration c = getResources().getConfiguration();
+        int size = c.screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK;
+        switch (size) {
+        case Configuration.SCREENLAYOUT_SIZE_SMALL:
+            sizeString = "SMALL";
+            break;
+        case Configuration.SCREENLAYOUT_SIZE_NORMAL:
+            sizeString = "NORMAL";
+            break;
+        case Configuration.SCREENLAYOUT_SIZE_LARGE:
+            sizeString = "LARGE";
+            break;
+        case Configuration.SCREENLAYOUT_SIZE_XLARGE:
+            sizeString = "XLARGE";
+            break;
+        default:
+            sizeString = "UNDEFINED";
+        }
+        return sizeString;
+    }
+
+    private String getScreenDensity() {
         DisplayMetrics dm = getResources().getDisplayMetrics();
         String density = null;
         switch (dm.densityDpi) {
-        case DisplayMetrics.DENSITY_XHIGH:
-            density = "XHDPI";
+        case DENSITY_XHIGH:
+            density = "XHDPI (" + DENSITY_XHIGH + "dpi)";
             break;
-        case DisplayMetrics.DENSITY_HIGH:
-            density = "HDPI";
+        case DENSITY_HIGH:
+            density = "HDPI (" + DENSITY_HIGH + "dpi)";
             break;
-        case DisplayMetrics.DENSITY_MEDIUM:
-            density = "MDPI";
+        case DENSITY_TV:
+            density = "TV (" + DENSITY_TV + "dpi)";
             break;
-        case DisplayMetrics.DENSITY_LOW:
-            density = "LDPI";
+        case DENSITY_MEDIUM:
+            density = "MDPI (" + DENSITY_MEDIUM + "dpi)";
+            break;
+        case DENSITY_LOW:
+            density = "LDPI (" + DENSITY_LOW + "dpi)";
             break;
         default:
-            density = "default or unknown";
+            density = "UNDEFINED";
         }
-
+        return density;
+    }
+    
+    private String getUiMode() {
+        String uiModeString = null;
         Configuration c = getResources().getConfiguration();
-        int sizeMask = c.screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK;
-        String size = null;
-        switch (sizeMask) {
-        case Configuration.SCREENLAYOUT_SIZE_SMALL:
-            size = "SMALL";
+        int uiMode = c.uiMode & Configuration.UI_MODE_TYPE_MASK;
+        switch (uiMode) {
+        case UI_MODE_TYPE_NORMAL:
+            uiModeString = "NORMAL";
             break;
-        case Configuration.SCREENLAYOUT_SIZE_NORMAL:
-            size = "NORMAL";
+        case UI_MODE_TYPE_DESK:
+            uiModeString = "DESK";
             break;
-        case Configuration.SCREENLAYOUT_SIZE_LARGE:
-            size = "LARGE";
+        case UI_MODE_TYPE_CAR:
+            uiModeString = "CAR";
             break;
-        case Configuration.SCREENLAYOUT_SIZE_XLARGE:
-            size = "XLARGE";
+        case UI_MODE_TYPE_TELEVISION:
+            uiModeString = "TV";
             break;
         default:
-            size = "UNDEFINED";
+            uiModeString = "UNDEFINED";
         }
-
-        TextView text = (TextView) findViewById(R.id.text);
-        text.setText(density + " / " + size);
+        return uiModeString;
     }
 }
