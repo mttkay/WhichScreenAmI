@@ -15,6 +15,7 @@
     android:layout_height="wrap_content"
     android:layout_centerHorizontal="true"
     android:background="#80000000"
+    android:gravity="center"
     android:text="X px"
     android:textSize="28sp"
     android:textStyle="bold" />
@@ -33,6 +34,7 @@
     android:layout_alignParentBottom="true"
     android:layout_alignParentRight="true"
     android:background="#80000000"
+    android:gravity="center"
     android:text="Y px"
     android:textSize="28sp"
     android:textStyle="bold" />

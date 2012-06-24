@@ -1,5 +1,7 @@
 package com.github.kaeppler.whichscreen;
 
+import java.lang.reflect.Field;
+
 import android.app.Activity;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -45,9 +47,9 @@ public class ScreenDetectorActivity extends Activity {
         text2.setText(sb.toString());
 
         TextView textX = (TextView) findViewById(R.id.text_x);
-        textX.setText(getScreenX() + "px");
+        textX.setText(getScreenX() + "px\n" + getScaledScreenDim("screenWidthDp") + "dp");
         TextView textY = (TextView) findViewById(R.id.text_y);
-        textY.setText(getScreenY() + "px");
+        textY.setText(getScreenY() + "px\n" + getScaledScreenDim("screenHeightDp") + "dp");
     }
 
     private String getSizeClass() {
@@ -124,6 +126,18 @@ public class ScreenDetectorActivity extends Activity {
 
     private String getScreenY() {
         return String.valueOf(displayMetrics.heightPixels);
+    }
+
+    private String getScaledScreenDim(String which) {
+        Field field = null;
+        try {
+            field = configuration.getClass().getField(which);
+            int scaledDim = (Integer) field.get(configuration);
+            return String.valueOf(scaledDim);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "?";
+        }
     }
 
     private String getScaledDensity() {
