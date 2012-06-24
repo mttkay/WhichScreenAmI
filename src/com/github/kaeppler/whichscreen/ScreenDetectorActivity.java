@@ -19,11 +19,17 @@ public class ScreenDetectorActivity extends Activity {
     private static final int UI_MODE_TYPE_CAR = 3;
     private static final int UI_MODE_TYPE_TELEVISION = 4;
 
+    private Configuration configuration;
+    private DisplayMetrics displayMetrics;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.main);
+
+        configuration = getResources().getConfiguration();
+        displayMetrics = getResources().getDisplayMetrics();
 
         String density = getDensityClass();
         String size = getSizeClass();
@@ -46,8 +52,7 @@ public class ScreenDetectorActivity extends Activity {
 
     private String getSizeClass() {
         String sizeString = null;
-        Configuration c = getResources().getConfiguration();
-        int size = c.screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK;
+        int size = configuration.screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK;
         switch (size) {
         case Configuration.SCREENLAYOUT_SIZE_SMALL:
             sizeString = "SMALL";
@@ -68,9 +73,8 @@ public class ScreenDetectorActivity extends Activity {
     }
 
     private String getDensityClass() {
-        DisplayMetrics dm = getResources().getDisplayMetrics();
         String density = null;
-        switch (dm.densityDpi) {
+        switch (displayMetrics.densityDpi) {
         case DENSITY_XHIGH:
             density = "XHDPI";
             break;
@@ -94,8 +98,7 @@ public class ScreenDetectorActivity extends Activity {
 
     private String getUiMode() {
         String uiModeString = null;
-        Configuration c = getResources().getConfiguration();
-        int uiMode = c.uiMode & Configuration.UI_MODE_TYPE_MASK;
+        int uiMode = configuration.uiMode & Configuration.UI_MODE_TYPE_MASK;
         switch (uiMode) {
         case UI_MODE_TYPE_NORMAL:
             uiModeString = "NORMAL";
@@ -116,23 +119,19 @@ public class ScreenDetectorActivity extends Activity {
     }
 
     private String getScreenX() {
-        DisplayMetrics dm = getResources().getDisplayMetrics();
-        return String.valueOf(dm.widthPixels);
+        return String.valueOf(displayMetrics.widthPixels);
     }
 
     private String getScreenY() {
-        DisplayMetrics dm = getResources().getDisplayMetrics();
-        return String.valueOf(dm.heightPixels);
+        return String.valueOf(displayMetrics.heightPixels);
     }
 
     private String getScaledDensity() {
-        DisplayMetrics dm = getResources().getDisplayMetrics();
-        return String.valueOf(dm.densityDpi);
+        return String.valueOf(displayMetrics.densityDpi);
     }
 
     private String getScreenDensity() {
-        DisplayMetrics dm = getResources().getDisplayMetrics();
-        return (int) dm.xdpi + "x" + (int) dm.ydpi;
+        return (int) displayMetrics.xdpi + "x" + (int) displayMetrics.ydpi;
     }
 
 }
