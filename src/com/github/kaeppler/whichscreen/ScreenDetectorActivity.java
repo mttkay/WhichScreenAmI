@@ -84,7 +84,7 @@ public class ScreenDetectorActivity extends Activity {
             density = "HDPI";
             break;
         case DENSITY_TV:
-            density = "TV";
+            density = "TVDPI";
             break;
         case DENSITY_MEDIUM:
             density = "MDPI";
