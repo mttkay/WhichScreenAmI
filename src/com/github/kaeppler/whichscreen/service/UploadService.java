@@ -9,6 +9,8 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
+import java.io.BufferedInputStream;
+import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
@@ -27,7 +29,6 @@ public class UploadService extends IntentService {
 
             final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
             final int versionLastUploaded = prefs.getInt(VERSION_LAST_UPLOADED, -1);
-            final String packageName = getPackageName();
             final int myVersion;
             try {
                 myVersion = getPackageManager().getPackageInfo(getPackageName(), 0).versionCode;
@@ -44,9 +45,9 @@ public class UploadService extends IntentService {
             URL url = null;
 
             try {
-                url = new URL(String.format("http://google.com/%s?hash=%s&versionCode=%s&memoryClass=%s&", packageName, deviceInfo.getHashOfAndroidId(), myVersion, deviceInfo.getMemoryClass()));
+                url = new URL(String.format("https://docs.google.com/spreadsheet/formResponse?formkey=dEExRVg5aDQ4NHhUTmZicFdvT2c2b2c6MQ&ifq?entry.0.single=%s&entry.1.single=%s&entry.2.single=%s", deviceInfo.getHashOfAndroidId(), myVersion, deviceInfo.getMemoryClass()));
                 urlConnection = (HttpURLConnection) url.openConnection();
-                //final InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+                final InputStream in = new BufferedInputStream(urlConnection.getInputStream());
                 // ignore the result
                 Log.i(TAG, "Made request to " + url);
                 // Record that we uploaded data for this version of the app
