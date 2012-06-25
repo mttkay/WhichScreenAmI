@@ -1,12 +1,14 @@
 package com.github.kaeppler.whichscreen;
 
-import java.lang.reflect.Field;
-
 import android.app.Activity;
+import android.app.ActivityManager;
+import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.widget.TextView;
+
+import java.lang.reflect.Field;
 
 public class ScreenDetectorActivity extends Activity {
 
@@ -44,6 +46,7 @@ public class ScreenDetectorActivity extends Activity {
         sb.append("Scaled Density: " + getScaledDensity());
         sb.append("\nReal Density: " + getScreenDensity());
         sb.append("\nUI mode: " + getUiMode());
+        sb.append("\nHeap size: ~" + ((ActivityManager) getSystemService(Context.ACTIVITY_SERVICE)).getMemoryClass() + "Mb" );
         text2.setText(sb.toString());
 
         TextView textX = (TextView) findViewById(R.id.text_x);
