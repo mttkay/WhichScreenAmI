@@ -26,7 +26,7 @@ public class UploadService extends IntentService {
         try {
 
             final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-            final int versionLastUploaded = prefs.getInt(VERSION_LAST_UPLOADED,-1);
+            final int versionLastUploaded = prefs.getInt(VERSION_LAST_UPLOADED, -1);
             final String packageName = getPackageName();
             final int myVersion;
             try {
@@ -36,7 +36,7 @@ public class UploadService extends IntentService {
             }
 
             // Don't upload if we already uploaded for this device.
-            if( versionLastUploaded == myVersion )
+            if (versionLastUploaded == myVersion)
                 return;
 
             DeviceInfo deviceInfo = new DeviceInfo(this);
@@ -44,20 +44,20 @@ public class UploadService extends IntentService {
             URL url = null;
 
             try {
-                url = new URL(String.format("http://google.com/%s?versionCode=%s&memoryClass=%s&",packageName,myVersion,deviceInfo.getMemoryClass()));
+                url = new URL(String.format("http://google.com/%s?versionCode=%s&memoryClass=%s&", packageName, myVersion, deviceInfo.getMemoryClass()));
                 urlConnection = (HttpURLConnection) url.openConnection();
-                    //final InputStream in = new BufferedInputStream(urlConnection.getInputStream());
-                    // ignore the result
-                    Log.i(TAG, "Made request to " + url );
-                    // Record that we uploaded data for this version of the app
-                    prefs.edit().putInt(VERSION_LAST_UPLOADED,myVersion).commit();
-                } catch (Exception e) {
-                    // Log but otherwise ignore exceptions since we can always just try again some other time
-                    Log.e(TAG, String.format("Unable to upload data to %s, will try again some other time",url),e);
-                } finally {
-                    if( urlConnection!=null )
-                        urlConnection.disconnect();
-                }
+                //final InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+                // ignore the result
+                Log.i(TAG, "Made request to " + url);
+                // Record that we uploaded data for this version of the app
+                prefs.edit().putInt(VERSION_LAST_UPLOADED, myVersion).commit();
+            } catch (Exception e) {
+                // Log but otherwise ignore exceptions since we can always just try again some other time
+                Log.e(TAG, String.format("Unable to upload data to %s, will try again some other time", url), e);
+            } finally {
+                if (urlConnection != null)
+                    urlConnection.disconnect();
+            }
 
         } finally {
             stopSelf();
