@@ -44,7 +44,7 @@ public class UploadService extends IntentService {
             URL url = null;
 
             try {
-                url = new URL(String.format("http://google.com/%s?versionCode=%s&memoryClass=%s&", packageName, myVersion, deviceInfo.getMemoryClass()));
+                url = new URL(String.format("http://google.com/%s?hash=%s&versionCode=%s&memoryClass=%s&", packageName, deviceInfo.getHashOfAndroidId(), myVersion, deviceInfo.getMemoryClass()));
                 urlConnection = (HttpURLConnection) url.openConnection();
                 //final InputStream in = new BufferedInputStream(urlConnection.getInputStream());
                 // ignore the result

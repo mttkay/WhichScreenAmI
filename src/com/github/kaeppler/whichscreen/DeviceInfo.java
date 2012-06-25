@@ -3,9 +3,12 @@ package com.github.kaeppler.whichscreen;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.res.Configuration;
+import android.provider.Settings.Secure;
 import android.util.DisplayMetrics;
 
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Field;
+import java.util.UUID;
 
 public class DeviceInfo {
     private static final int DENSITY_XHIGH = 320;
@@ -122,6 +125,16 @@ public class DeviceInfo {
         } catch (Exception e) {
             e.printStackTrace();
             return "?";
+        }
+    }
+
+    public String getHashOfAndroidId() {
+        // Note that this doesn't work in all cases
+        final String androidId = Secure.getString(context.getContentResolver(), Secure.ANDROID_ID);
+        try {
+            return UUID.nameUUIDFromBytes(androidId.getBytes("utf8")).toString();
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
         }
     }
 

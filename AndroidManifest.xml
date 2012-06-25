@@ -22,4 +22,6 @@
             android:name=".service.UploadService" />
     </application>
 
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+
 </manifest>
