@@ -10,9 +10,9 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 import java.io.BufferedInputStream;
-import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 
 public class UploadService extends IntentService {
     private static final String VERSION_LAST_UPLOADED = "uploadedVersionNumber";
@@ -45,10 +45,24 @@ public class UploadService extends IntentService {
             URL url = null;
 
             try {
-                url = new URL(String.format("https://docs.google.com/spreadsheet/formResponse?formkey=dEExRVg5aDQ4NHhUTmZicFdvT2c2b2c6MQ&ifq?entry.0.single=%s&entry.1.single=%s&entry.2.single=%s", deviceInfo.getHashOfAndroidId(), myVersion, deviceInfo.getMemoryClass()));
+                url = new URL(
+                        String.format("https://docs.google.com/spreadsheet/formResponse?formkey=dEExRVg5aDQ4NHhUTmZicFdvT2c2b2c6MQ&ifq?entry.0.single=%s&entry.1.single=%s&entry.2.single=%s&entry.3.single=%s&entry.4.single=%s&entry.5.single=%s&entry.6.single=%s&entry.7.single=%s&entry.8.single=%s&entry.9.single=%s&entry.10.single=%s&entry.11.single=%s&entry.12.single=%s",
+                                URLEncoder.encode(deviceInfo.getHashOfAndroidId()),
+                                myVersion,
+                                deviceInfo.getMemoryClass(),
+                                URLEncoder.encode(deviceInfo.getScaledDensity()),
+                                URLEncoder.encode(deviceInfo.getScreenDensity()),
+                                URLEncoder.encode(deviceInfo.getSizeClass()),
+                                URLEncoder.encode(deviceInfo.getDensityClass()),
+                                URLEncoder.encode(deviceInfo.getUiMode()),
+                                URLEncoder.encode(deviceInfo.getScreenX()),
+                                URLEncoder.encode(deviceInfo.getScreenY()),
+                                URLEncoder.encode(deviceInfo.getHashOfAndroidId()),
+                                URLEncoder.encode(deviceInfo.getAndroidVersion()),
+                                URLEncoder.encode(deviceInfo.getDeviceModel())
+                        ));
                 urlConnection = (HttpURLConnection) url.openConnection();
-                final InputStream in = new BufferedInputStream(urlConnection.getInputStream());
-                // ignore the result
+                new BufferedInputStream(urlConnection.getInputStream()); // ignore the result
                 Log.i(TAG, "Made request to " + url);
                 // Record that we uploaded data for this version of the app
                 prefs.edit().putInt(VERSION_LAST_UPLOADED, myVersion).commit();

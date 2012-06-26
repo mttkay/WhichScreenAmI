@@ -3,6 +3,7 @@ package com.github.kaeppler.whichscreen;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.res.Configuration;
+import android.os.Build;
 import android.provider.Settings.Secure;
 import android.util.DisplayMetrics;
 
@@ -140,5 +141,13 @@ public class DeviceInfo {
 
     public int getMemoryClass() {
         return ((ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE)).getMemoryClass();
+    }
+
+    public String getAndroidVersion() {
+        return Build.VERSION.RELEASE;
+    }
+
+    public String getDeviceModel() {
+        return String.format("%s %s (%s)", Build.MANUFACTURER, Build.MODEL, Build.DEVICE);
     }
 }
