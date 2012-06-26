@@ -40,9 +40,14 @@ public class UploadService extends IntentService {
             if (versionLastUploaded == myVersion)
                 return;
 
-            DeviceInfo deviceInfo = new DeviceInfo(this);
+            final DeviceInfo deviceInfo = new DeviceInfo(this);
+            final String model = deviceInfo.getDeviceModel();
             HttpURLConnection urlConnection = null;
             URL url = null;
+
+            // Don't bother uploading emulator data
+            if( model.toLowerCase().contains("unknown") && model.toLowerCase().contains("emulator") )
+                return;
 
             try {
                 url = new URL(
@@ -59,7 +64,7 @@ public class UploadService extends IntentService {
                                 URLEncoder.encode(deviceInfo.getScreenY()),
                                 URLEncoder.encode(deviceInfo.getHashOfAndroidId()),
                                 URLEncoder.encode(deviceInfo.getAndroidVersion()),
-                                URLEncoder.encode(deviceInfo.getDeviceModel())
+                                URLEncoder.encode(model)
                         ));
                 urlConnection = (HttpURLConnection) url.openConnection();
                 new BufferedInputStream(urlConnection.getInputStream()); // ignore the result

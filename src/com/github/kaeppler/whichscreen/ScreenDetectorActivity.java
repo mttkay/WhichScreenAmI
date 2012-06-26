@@ -4,7 +4,9 @@ import com.github.kaeppler.whichscreen.service.UploadService;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.view.Menu;
 import android.widget.TextView;
 
 public class ScreenDetectorActivity extends Activity {
@@ -43,4 +45,9 @@ public class ScreenDetectorActivity extends Activity {
         startService(new Intent(this, UploadService.class));
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        menu.add(Menu.NONE, Menu.NONE, Menu.NONE, "View Report").setIntent(new Intent(Intent.ACTION_VIEW, Uri.parse("https://docs.google.com/spreadsheet/ccc?key=0Anf-WW-Nv9fhdEExRVg5aDQ4NHhUTmZicFdvT2c2b2c")));
+        return true;
+    }
 }
