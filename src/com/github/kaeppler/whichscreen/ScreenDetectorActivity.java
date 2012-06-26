@@ -33,7 +33,6 @@ public class ScreenDetectorActivity extends Activity {
         sb.append("Scaled Density: " + deviceInfo.getScaledDensity());
         sb.append("\nReal Density: " + deviceInfo.getScreenDensity());
         sb.append("\nUI mode: " + deviceInfo.getUiMode());
-        sb.append("\nHeap size: ~" + deviceInfo.getMemoryClass() + "Mb");
         text2.setText(sb.toString());
 
         TextView textX = (TextView) findViewById(R.id.text_x);
