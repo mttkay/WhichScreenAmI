@@ -89,23 +89,25 @@ public class DeviceInfo {
 
     public String getUiMode() {
         String uiModeString = null;
-        int uiMode = configuration.uiMode & Configuration.UI_MODE_TYPE_MASK;
-        switch (uiMode) {
-            case UI_MODE_TYPE_NORMAL:
-                uiModeString = "NORMAL";
-                break;
-            case UI_MODE_TYPE_DESK:
-                uiModeString = "DESK";
-                break;
-            case UI_MODE_TYPE_CAR:
-                uiModeString = "CAR";
-                break;
-            case UI_MODE_TYPE_TELEVISION:
-                uiModeString = "TV";
-                break;
-            default:
-                uiModeString = "?";
-        }
+	if (Build.VERSION.SDK_INT >= 8) {
+	    int uiMode = configuration.uiMode & Configuration.UI_MODE_TYPE_MASK;
+	    switch (uiMode) {
+                case UI_MODE_TYPE_NORMAL:
+                    uiModeString = "NORMAL";
+                    break;
+                case UI_MODE_TYPE_DESK:
+                    uiModeString = "DESK";
+                    break;
+                case UI_MODE_TYPE_CAR:
+                    uiModeString = "CAR";
+                    break;
+                case UI_MODE_TYPE_TELEVISION:
+                    uiModeString = "TV";
+                    break;
+                default:
+                    uiModeString = "?";
+	    }
+	}
         return uiModeString;
     }
 

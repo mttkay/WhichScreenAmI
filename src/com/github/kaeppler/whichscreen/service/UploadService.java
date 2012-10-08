@@ -50,6 +50,9 @@ public class UploadService extends IntentService {
                 return;
 
             try {
+		String uiMode = deviceInfo.getUiMode();
+		if (uiMode == null)
+		    uiMode = "null";
                 url = new URL(
                         String.format("https://docs.google.com/spreadsheet/formResponse?formkey=dEExRVg5aDQ4NHhUTmZicFdvT2c2b2c6MQ&ifq?entry.0.single=%s&entry.1.single=%s&entry.2.single=%s&entry.3.single=%s&entry.4.single=%s&entry.5.single=%s&entry.6.single=%s&entry.7.single=%s&entry.8.single=%s&entry.9.single=%s&entry.10.single=%s&entry.11.single=%s&entry.12.single=%s",
                                 URLEncoder.encode(deviceInfo.getHashOfAndroidId()),
@@ -59,7 +62,7 @@ public class UploadService extends IntentService {
                                 URLEncoder.encode(deviceInfo.getScreenDensity()),
                                 URLEncoder.encode(deviceInfo.getSizeClass()),
                                 URLEncoder.encode(deviceInfo.getDensityClass()),
-                                URLEncoder.encode(deviceInfo.getUiMode()),
+                                URLEncoder.encode(uiMode),
                                 URLEncoder.encode(deviceInfo.getScreenX()),
                                 URLEncoder.encode(deviceInfo.getScreenY()),
                                 URLEncoder.encode(deviceInfo.getHashOfAndroidId()),
